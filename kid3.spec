@@ -14,6 +14,7 @@ BuildRequires:	kdelibs-devel
 BuildRequires:	libtunepimp-devel
 BuildRequires:	qt-devel
 BuildRequires:	taglib-devel
+Suggests:	xdg-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
