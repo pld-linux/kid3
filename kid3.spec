@@ -1,12 +1,12 @@
 Summary:	ID3 tag editor
 Summary(pl.UTF-8):	Edytor etykiet ID3
 Name:		kid3
-Version:	1.4
+Version:	2.2.1
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Sound
 Source0:	http://dl.sourceforge.net/kid3/%{name}-%{version}.tar.gz
-# Source0-md5:	296b503ae163b32eaee7385105f13ba1
+# Source0-md5:	79a4e1e4d18672337539a15256cc52f4
 URL:		http://kid3.sourceforge.net/
 BuildRequires:	cmake
 BuildRequires:	flac-c++-devel
@@ -53,6 +53,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/%{name}
 %dir %{_datadir}/apps/kid3
 %dir %{_datadir}/apps/kid3/kid3ui.rc
+%{_libdir}/libkid3-*.so
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_iconsdir}/hicolor/*/apps/%{name}.svgz
 %{_desktopdir}/kde4/%{name}.desktop
