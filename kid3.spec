@@ -1,23 +1,29 @@
 Summary:	ID3 tag editor
 Summary(pl.UTF-8):	Edytor etykiet ID3
 Name:		kid3
-Version:	3.0.2
-Release:	1
+Version:	3.4.2
+Release:	0.1
 License:	GPL v2
 Group:		X11/Applications/Sound
-Source0:	http://dl.sourceforge.net/kid3/%{name}-%{version}.tar.gz
-# Source0-md5:	dfb7e65d87d95460140c4cc88ea67951
+Source0:	http://downloads.sourceforge.net/kid3/%{name}-%{version}.tar.gz
+# Source0-md5:	48c9dc602d26dd139c477d8cd90e78b6
 URL:		http://kid3.sourceforge.net/
+BuildRequires:	appstream-glib
 BuildRequires:	automoc4
 BuildRequires:	cmake
 BuildRequires:	flac-c++-devel
+BuildRequires:	flac-devel
+BuildRequires:	gettext
+BuildRequires:	gstreamer-devel
 BuildRequires:	id3lib-devel
 BuildRequires:	kde4-kdelibs-devel
 BuildRequires:	libchromaprint-devel
 BuildRequires:	libtunepimp-devel
+BuildRequires:	libvorbis-devel
 BuildRequires:	mp4v2-devel
-BuildRequires:	taglib-devel
 BuildRequires:	qt4-linguist
+BuildRequires:	readline-devel
+BuildRequires:	taglib-devel >= 1.4
 Suggests:	xdg-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -33,17 +39,17 @@ the file name or vice versa.
 %setup -q
 
 %build
+install -d build
+cd build
 %cmake \
-	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
-	.
-%{__make} -j1
+	-DWITH_NO_MANCOMPRESS=ON \
+	..
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-%{__make} install \
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	kde_htmldir=%{_kdedocdir}
 
 %find_lang %{name} --with-kde
 
@@ -53,7 +59,11 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%attr(755,root,root) %{_bindir}/%{name}*
+%attr(755,root,root) %{_bindir}/kid3
+%attr(755,root,root) %{_bindir}/kid3-cli
+%attr(755,root,root) %{_bindir}/kid3-qt
+%{_mandir}/man1/kid3*.1*
+%lang(de) %{_mandir}/de/man1/kid3*.1*
 %dir %{_datadir}/apps/kid3
 %dir %{_datadir}/apps/kid3/kid3ui.rc
 %{_libdir}/%{name}
@@ -64,5 +74,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/kde4/%{name}.desktop
 %{_desktopdir}/%{name}-qt.desktop
 %{_datadir}/dbus-1/interfaces/net.sourceforge.Kid3.xml
+%{_datadir}/appdata/kid3.appdata.xml
+%{_datadir}/appdata/kid3-qt.appdata.xml
 %{_datadir}/%{name}
-%{_mandir}/man1/%{name}*.1*
