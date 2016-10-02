@@ -71,16 +71,17 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT \
 
-%find_lang %{name} --with-kde
+%if %{with kde}
+%find_lang %{name}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %{name}.lang
+%files %{?with_kde:-f %{name}.lang}
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
 %{_libdir}/%{name}
-%{_datadir}/dbus-1/interfaces/net.sourceforge.Kid3.xml
 %{_datadir}/%{name}
 
 %if %{with cli}
@@ -110,6 +111,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_desktopdir}/kde4/%{name}.desktop
 %{_datadir}/appdata/kid3.appdata.xml
+%{_datadir}/dbus-1/interfaces/net.sourceforge.Kid3.xml
 %dir %{_datadir}/apps/kid3
 %dir %{_datadir}/apps/kid3/kid3ui.rc
 %endif
