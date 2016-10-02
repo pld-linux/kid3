@@ -1,8 +1,14 @@
+#
+# Conditional build:
+%bcond_without	kde		# build without KDE4
+%bcond_without	qt		# build without Qt
+%bcond_without	cli		# build without CLI
+
 Summary:	ID3 tag editor
 Summary(pl.UTF-8):	Edytor etykiet ID3
 Name:		kid3
 Version:	3.4.2
-Release:	0.1
+Release:	0.3
 License:	GPL v2
 Group:		X11/Applications/Sound
 Source0:	http://downloads.sourceforge.net/kid3/%{name}-%{version}.tar.gz
@@ -10,7 +16,7 @@ Source0:	http://downloads.sourceforge.net/kid3/%{name}-%{version}.tar.gz
 URL:		http://kid3.sourceforge.net/
 BuildRequires:	appstream-glib
 BuildRequires:	automoc4
-BuildRequires:	cmake
+BuildRequires:	cmake >= 2.8
 BuildRequires:	flac-c++-devel
 BuildRequires:	flac-devel
 BuildRequires:	gettext
@@ -21,6 +27,7 @@ BuildRequires:	libchromaprint-devel
 BuildRequires:	libtunepimp-devel
 BuildRequires:	libvorbis-devel
 BuildRequires:	mp4v2-devel
+BuildRequires:	qcommandline-devel
 BuildRequires:	qt4-linguist
 BuildRequires:	readline-devel
 BuildRequires:	taglib-devel >= 1.4
@@ -42,7 +49,20 @@ the file name or vice versa.
 install -d build
 cd build
 %cmake \
+	-DBUILD_SHARED_LIBS=ON \
 	-DWITH_NO_MANCOMPRESS=ON \
+	-DWITH_APPS="%{?with_qt:Qt;}%{?with_cli:CLI;}%{?with_kde:KDE;}" \
+	-DWITH_CHROMAPRINT=ON \
+	-DWITH_FFMPEG=ON \
+	-DWITH_FLAC=ON \
+	-DWITH_ID3LIB=ON \
+	-DWITH_MP4V2=ON \
+	-DWITH_PHONON=ON \
+	-DWITH_QT4=ON \
+	-DWITH_QT5=OFF \
+	-DWITH_READLINE=ON \
+	-DWITH_TAGLIB=ON \
+	-DWITH_VORBIS=ON \
 	..
 %{__make}
 
@@ -59,21 +79,37 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%attr(755,root,root) %{_bindir}/kid3
+%{_libdir}/%{name}
+%{_datadir}/dbus-1/interfaces/net.sourceforge.Kid3.xml
+%{_datadir}/%{name}
+
+%if %{with cli}
 %attr(755,root,root) %{_bindir}/kid3-cli
+%{_mandir}/man1/kid3-cli.1
+%lang(de) %{_mandir}/de/man1/kid3-cli.1
+%endif
+
+%if %{with qt}
+%doc %lang(de) %{_docdir}/kid3-qt/kid3_de.html
+%doc %{_docdir}/kid3-qt/kid3_en.html
 %attr(755,root,root) %{_bindir}/kid3-qt
-%{_mandir}/man1/kid3*.1*
-%lang(de) %{_mandir}/de/man1/kid3*.1*
+%{_mandir}/man1/kid3-qt.1
+%lang(de) %{_mandir}/de/man1/kid3-qt.1
+%{_iconsdir}/hicolor/*/apps/%{name}-qt.png
+%{_iconsdir}/hicolor/*/apps/%{name}-qt.svg
+%{_desktopdir}/%{name}-qt.desktop
+%{_datadir}/appdata/kid3-qt.appdata.xml
+%endif
+
+%if %{with kde}
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/kid3
+%{_mandir}/man1/kid3.1*
+%lang(de) %{_mandir}/de/man1/kid3.1*
+%{_iconsdir}/hicolor/*/apps/%{name}.svgz
+%{_iconsdir}/hicolor/*/apps/%{name}.png
+%{_desktopdir}/kde4/%{name}.desktop
+%{_datadir}/appdata/kid3.appdata.xml
 %dir %{_datadir}/apps/kid3
 %dir %{_datadir}/apps/kid3/kid3ui.rc
-%{_libdir}/%{name}
-%{_iconsdir}/hicolor/*/apps/%{name}.png
-%{_iconsdir}/hicolor/*/apps/%{name}-qt.png
-%{_iconsdir}/hicolor/*/apps/%{name}.svgz
-%{_iconsdir}/hicolor/*/apps/%{name}-qt.svg
-%{_desktopdir}/kde4/%{name}.desktop
-%{_desktopdir}/%{name}-qt.desktop
-%{_datadir}/dbus-1/interfaces/net.sourceforge.Kid3.xml
-%{_datadir}/appdata/kid3.appdata.xml
-%{_datadir}/appdata/kid3-qt.appdata.xml
-%{_datadir}/%{name}
+%endif
