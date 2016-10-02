@@ -14,23 +14,40 @@ Group:		X11/Applications/Sound
 Source0:	http://downloads.sourceforge.net/kid3/%{name}-%{version}.tar.gz
 # Source0-md5:	48c9dc602d26dd139c477d8cd90e78b6
 URL:		http://kid3.sourceforge.net/
-BuildRequires:	appstream-glib
-BuildRequires:	automoc4
+BuildRequires:	QtCore-devel
+BuildRequires:	QtDBus-devel
+BuildRequires:	QtDeclarative-devel
+BuildRequires:	QtGui-devel
+BuildRequires:	QtSql-devel
+BuildRequires:	QtSvg-devel
+BuildRequires:	QtXml-devel
+BuildRequires:	QtXmlPatterns-devel
 BuildRequires:	cmake >= 2.8
+BuildRequires:	docbook-style-xsl
 BuildRequires:	flac-c++-devel
 BuildRequires:	flac-devel
-BuildRequires:	gettext
-BuildRequires:	gstreamer-devel
 BuildRequires:	id3lib-devel
-BuildRequires:	kde4-kdelibs-devel
 BuildRequires:	libchromaprint-devel
-BuildRequires:	libtunepimp-devel
 BuildRequires:	libvorbis-devel
+BuildRequires:	libxslt-progs
 BuildRequires:	mp4v2-devel
-BuildRequires:	qcommandline-devel
+BuildRequires:	phonon-devel
+BuildRequires:	pkgconfig
+BuildRequires:	python
+BuildRequires:	qt4-build
 BuildRequires:	qt4-linguist
+BuildRequires:	qt4-qmake
 BuildRequires:	readline-devel
 BuildRequires:	taglib-devel >= 1.4
+%if %{with kde}
+BuildRequires:	automoc4
+BuildRequires:	gettext-tools
+BuildRequires:	kde4-kdelibs-devel
+BuildRequires:	qcommandline-devel
+%endif
+%if %{with qt} || %{with kde}
+BuildRequires:	appstream-glib
+%endif
 Suggests:	xdg-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
