@@ -7,13 +7,13 @@
 Summary:	ID3 tag editor
 Summary(pl.UTF-8):	Edytor etykiet ID3
 Name:		kid3
-Version:	3.4.2
-Release:	0.3
+Version:	3.5.1
+Release:	0.1
 License:	GPL v2
 Group:		X11/Applications/Sound
 Source0:	http://downloads.sourceforge.net/kid3/%{name}-%{version}.tar.gz
 # Source0-md5:	48c9dc602d26dd139c477d8cd90e78b6
-URL:		http://kid3.sourceforge.net/
+URL:		https://kid3.sourceforge.io/
 BuildRequires:	QtCore-devel
 BuildRequires:	QtDBus-devel
 BuildRequires:	QtDeclarative-devel
@@ -108,6 +108,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %if %{with qt}
+%doc %dir %{_docdir}/kid3-qt
 %doc %lang(de) %{_docdir}/kid3-qt/kid3_de.html
 %doc %{_docdir}/kid3-qt/kid3_en.html
 %attr(755,root,root) %{_bindir}/kid3-qt
@@ -116,7 +117,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/*/apps/%{name}-qt.png
 %{_iconsdir}/hicolor/*/apps/%{name}-qt.svg
 %{_desktopdir}/%{name}-qt.desktop
-%{_datadir}/appdata/kid3-qt.appdata.xml
+%{_datadir}/metainfo/kid3-qt.appdata.xml
 %endif
 
 %if %{with kde}
@@ -127,7 +128,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/*/apps/%{name}.svgz
 %{_iconsdir}/hicolor/*/apps/%{name}.png
 %{_desktopdir}/kde4/%{name}.desktop
-%{_datadir}/appdata/kid3.appdata.xml
+%{_datadir}/metainfo/kid3.appdata.xml
 %{_datadir}/dbus-1/interfaces/net.sourceforge.Kid3.xml
 %dir %{_datadir}/apps/kid3
 %dir %{_datadir}/apps/kid3/kid3ui.rc
