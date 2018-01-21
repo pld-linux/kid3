@@ -12,7 +12,7 @@ Release:	0.2
 License:	GPL v2
 Group:		X11/Applications/Sound
 Source0:	http://downloads.sourceforge.net/kid3/%{name}-%{version}.tar.gz
-# Source0-md5:	48c9dc602d26dd139c477d8cd90e78b6
+# Source0-md5:	959024e2d080d92344a8161cc384334a
 URL:		https://kid3.sourceforge.io/
 BuildRequires:	QtCore-devel
 BuildRequires:	QtDBus-devel
