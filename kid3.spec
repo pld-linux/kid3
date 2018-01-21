@@ -8,7 +8,7 @@ Summary:	ID3 tag editor
 Summary(pl.UTF-8):	Edytor etykiet ID3
 Name:		kid3
 Version:	3.5.1
-Release:	0.1
+Release:	0.2
 License:	GPL v2
 Group:		X11/Applications/Sound
 Source0:	http://downloads.sourceforge.net/kid3/%{name}-%{version}.tar.gz
@@ -59,6 +59,27 @@ tags of multiple files to the same values (e.g. album, artist, year
 and genre in all files of the same album) and generate the tags from
 the file name or vice versa.
 
+%package cli
+Summary:	Efficient Qt ID3 tag editor
+Requires:	%{name} = %{version}-%{release}
+
+%description cli
+Efficient Qt ID3 tag editor.
+
+%package qt
+Summary:	Efficient Qt ID3 tag editor
+Requires:	%{name} = %{version}-%{release}
+
+%description qt
+Efficient Qt ID3 tag editor.
+
+%package kde
+Summary:	Efficient Qt ID3 tag editor
+Requires:	%{name} = %{version}-%{release}
+
+%description kde
+Efficient Qt ID3 tag editor.
+
 %prep
 %setup -q
 
@@ -95,19 +116,53 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files %{?with_kde:-f %{name}.lang}
+%files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%{_libdir}/%{name}
-%{_datadir}/%{name}
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/plugins/imports
+%dir %{_libdir}/%{name}/plugins/imports/Kid3
+%attr(755,root,root) %{_libdir}/%{name}/libkid3-core.so*
+%attr(755,root,root) %{_libdir}/%{name}/libkid3-gui.so*
+%{_libdir}/%{name}/plugins/imports/Kid3/Kid3Script.qml
+%attr(755,root,root) %{_libdir}/%{name}/plugins/imports/Kid3/libkid3qml.so
+%{_libdir}/%{name}/plugins/imports/Kid3/qmldir
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libacoustidimport.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libamazonimport.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libdiscogsimport.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libfreedbimport.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libid3libmetadata.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libmp4v2metadata.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libmusicbrainzimport.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/liboggflacmetadata.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libqmlcommand.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libtaglibmetadata.so
+%dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/qml
+%dir %{_datadir}/%{name}/qml/script
+%{_datadir}/%{name}/qml/script/EmbedAlbumArt.qml
+%{_datadir}/%{name}/qml/script/EmbedLyrics.qml
+%{_datadir}/%{name}/qml/script/ExportCsv.qml
+%{_datadir}/%{name}/qml/script/ExportHtmlPlayer.qml
+%{_datadir}/%{name}/qml/script/ExtractAlbumArt.qml
+%{_datadir}/%{name}/qml/script/ImportCsv.qml
+%{_datadir}/%{name}/qml/script/QmlConsole.qml
+%{_datadir}/%{name}/qml/script/ReplayGain2SoundCheck.qml
+%{_datadir}/%{name}/qml/script/ResizeAlbumArt.qml
+%{_datadir}/%{name}/qml/script/ShowTextEncodingV1.qml
 
 %if %{with cli}
+%files cli
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/kid3-cli
 %{_mandir}/man1/kid3-cli.1
 %lang(de) %{_mandir}/de/man1/kid3-cli.1
 %endif
 
 %if %{with qt}
+%files qt
+%defattr(644,root,root,755)
 %doc %dir %{_docdir}/kid3-qt
 %doc %lang(de) %{_docdir}/kid3-qt/kid3_de.html
 %doc %{_docdir}/kid3-qt/kid3_en.html
@@ -121,6 +176,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %if %{with kde}
+%files kde -f %{name}.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/kid3
 %{_mandir}/man1/kid3.1*
